@@ -3,13 +3,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const pages = ['index', 'height-converter', 'temperature-converter', 'weight-converter'];
+
 module.exports = {
-    entry: {
-        index: './src/pages/index/index.js',
-        'height-converter': './src/pages/height-converter/height-converter.js',
-        'temperature-converter': './src/pages/temperature-converter/temperature-converter.js',
-        'weight-converter': './src/pages/weight-converter/weight-converter.js'
-    },
+    entry: pages.reduce((config, page) => {
+        config[page] = `./src/pages/${page}/${page}.js`;
+        return config;
+    }, {}),
 
     output: {
         filename: '[name].[contenthash].js',
@@ -50,26 +50,14 @@ module.exports = {
             filename: 'bundle-[contenthash].css'
         }),
 
-        new HtmlWebpackPlugin({
-            template: './src/pages/index/index.html',
-            filename: 'index.html',
-            //chunks: ['index'],
-        }),
-        new HtmlWebpackPlugin({
-            template: './src/pages/height-converter/height-converter.html',
-            filename: 'height-converter.html',
-            //chunks: ['height-converter'],
-        }),
-        new HtmlWebpackPlugin({
-            template: './src/pages/weight-converter/weight-converter.html',
-            filename: 'weight-converter.html',
-            //chunks: ['weight-converter'],
-        }),
-        new HtmlWebpackPlugin({
-            template: './src/pages/temperature-converter/temperature-converter.html',
-            filename: 'temperature-converter.html',
-            //chunks: ['temperature-converter'],
-        })
+        ...pages.map(
+            (page) =>
+                new HtmlWebpackPlugin({
+                    template: `./src/pages/${page}/${page}.html`,
+                    filename: `${page}.html`,
+                    chunks: [page],
+                })
+        )
     ],
 
     devServer: {
