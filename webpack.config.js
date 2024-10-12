@@ -20,29 +20,9 @@ module.exports = {
     module: {
         rules: [
             {test: /\.(png|jpg|ttf)$/, type: 'asset'},
-            {
-                'test': /\.js$/,
-                'exclude': /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        targets: 'defaults',
-                        presets: [
-                            ['@babel/preset-env']
-                        ]
-                    }
-                }
-            },
             {test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader']},
         ]
     },
-
-    /*
-    optimization: {
-        splitChunks: {
-            chunks: 'all',
-        },
-    },*/
 
     plugins: [
         new TerserPlugin(),
@@ -53,26 +33,18 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/pages/index/index.html',
             filename: 'index.html',
-            //chunks: ['index'],
         }),
         new HtmlWebpackPlugin({
             template: './src/pages/height-converter/height-converter.html',
             filename: 'height-converter.html',
-            //chunks: ['height-converter'],
         }),
         new HtmlWebpackPlugin({
             template: './src/pages/weight-converter/weight-converter.html',
             filename: 'weight-converter.html',
-            //chunks: ['weight-converter'],
         }),
         new HtmlWebpackPlugin({
             template: './src/pages/temperature-converter/temperature-converter.html',
             filename: 'temperature-converter.html',
-            //chunks: ['temperature-converter'],
         })
     ],
-
-    devServer: {
-        static: './dist',
-    },
 };
