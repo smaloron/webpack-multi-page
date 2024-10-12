@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
@@ -24,8 +23,13 @@ module.exports = {
         ]
     },
 
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+        }
+    },
+
     plugins: [
-        new TerserPlugin(),
         new MiniCssExtractPlugin({
             filename: 'bundle-[contenthash].css'
         }),
@@ -33,18 +37,22 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/pages/index/index.html',
             filename: 'index.html',
+            chunks: ['index'],
         }),
         new HtmlWebpackPlugin({
             template: './src/pages/height-converter/height-converter.html',
             filename: 'height-converter.html',
+            chunks: ['height-converter'],
         }),
         new HtmlWebpackPlugin({
             template: './src/pages/weight-converter/weight-converter.html',
             filename: 'weight-converter.html',
+            chunks: ['weight-converter'],
         }),
         new HtmlWebpackPlugin({
             template: './src/pages/temperature-converter/temperature-converter.html',
             filename: 'temperature-converter.html',
+            chunks: ['temperature-converter'],
         })
     ],
 };
